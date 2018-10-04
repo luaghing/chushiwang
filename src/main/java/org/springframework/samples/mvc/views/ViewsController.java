@@ -2,15 +2,27 @@ package org.springframework.samples.mvc.views;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.mvc.jpa.entity.User;
+import org.springframework.samples.mvc.jpa.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/views/*")
 public class ViewsController {
+
+	private UserRepository userRepository;
+
+	@Autowired
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	@GetMapping("html")
 	public String prepare(Model model) {
@@ -39,6 +51,8 @@ public class ViewsController {
 	}
 	@GetMapping("/uploadForm")
 	public String uplodadForm(){
+		List<User> all = userRepository.findAll();
+		System.out.println(all.get(1).getName());
 		return "views/uploadForm";
 	}
 }
